@@ -1,1 +1,37 @@
 <h2>All Products ::: Under Construction</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <th>S.NO</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Featured</th>
+        <th>Action</th>
+    </tr>
+
+    <% for(let i = 0; i < products.length; i++) { %>
+        <tr>
+            <td>
+                <%= i + 1; %>
+            </td>
+            <td>
+                <%= products[i].title; %>
+            </td>
+            <td>
+                <%= products[i].description; %>
+            </td>
+            <td>
+                <%= products[i].price; %>
+            </td>
+            <td>
+                <%= products[i].quantity; %>
+            </td>
+            <td>
+                <%= products[i].isFeatured; %>
+            </td>
+        </tr>
+        <%} %>
+
+</table>
