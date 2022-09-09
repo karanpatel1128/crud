@@ -14,6 +14,9 @@ const connection = mysql.createConnection({
     database: "crud_db"
 });
 
+/**
+ * To check database connection
+ */
 connection.connect(function(error) {
     if (error) {
         console.log("Database Error", error);
@@ -72,6 +75,43 @@ app.post("/create-product", function(req, res) {
         } else {
             console.log("result", result);
             res.redirect('/products');
+        }
+    });
+});
+
+app.get("/create-category", function(req, res) {
+    let pageData = {
+        title: "Create Category",
+        pageName: "create-category"
+    };
+    res.render("template", pageData);
+});
+
+app.post("/create-category", function(req, res) {
+    let title = req.body.title;
+    let description = req.body.description;
+    let insertCategory = `INSERT INTO category(title, description) VALUES('${title}', '${description}')`;
+    connection.query(insertCategory, function(error, result) {
+        if (error) {
+            console.log("Database Query Error ::: ", error);
+        } else {
+            res.redirect('/categories');
+        }
+    });
+});
+
+app.get("/categories", function(req, res) {
+    let pageData = {
+        title: "All Categories",
+        pageName: "all-categories"
+    };
+    let allCat = `SELECT * FROM category`;
+    connection.query(allCat, function(error, result) {
+        if (error) {
+            console.log("Database Query Error ::: ", error);
+        } else {
+            pageData.categories = result;
+            res.render("template", pageData);
         }
     });
 });

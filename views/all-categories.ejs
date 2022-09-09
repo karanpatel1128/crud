@@ -1,0 +1,28 @@
+<h2>All Categories</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <th>S.NO</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Action</th>
+    </tr>
+
+    <% for(let i = 0; i < categories.length; i++){ %>
+        <tr>
+            <td>
+                <%= i + 1; %>
+            </td>
+            <td>
+                <%= categories[i].title; %>
+            </td>
+            <td>
+                <%= categories[i].description; %>
+            </td>
+            <td>
+
+            </td>
+        </tr>
+        <% } %>
+
+</table>
