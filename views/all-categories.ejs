@@ -1,5 +1,7 @@
 <h2>All Categories</h2>
-
+<div class="col-12 text text-end">
+    <a href="/create-category" class="btn btn-primary">Add New Category</a>
+</div>
 <table class="table table-bordered">
     <tr>
         <th>S.NO</th>
@@ -9,20 +11,22 @@
     </tr>
 
     <% for(let i = 0; i < categories.length; i++){ %>
-        <tr>
-            <td>
-                <%= i + 1; %>
-            </td>
-            <td>
-                <%= categories[i].title; %>
-            </td>
-            <td>
-                <%= categories[i].description; %>
-            </td>
-            <td>
-
-            </td>
-        </tr>
-        <% } %>
+        <% let cat = categories[i]; %>
+            <tr>
+                <td>
+                    <%= i + 1; %>
+                </td>
+                <td>
+                    <%= cat.title; %>
+                </td>
+                <td>
+                    <%= cat.description; %>
+                </td>
+                <td>
+                    <a href="/edit-category?cat_id=<%= cat.id; %>" class="btn btn-primary">Edit</a>
+                    <a href="#" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+            <% } %>
 
 </table>

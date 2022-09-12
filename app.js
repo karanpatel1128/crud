@@ -116,6 +116,27 @@ app.get("/categories", function(req, res) {
     });
 });
 
+app.get("/edit-category", function(req, res) {
+    let pageData = {
+        title: "Edit Category",
+        pageName: "edit-category"
+    };
+    const categoryId = req.query.cat_id;
+    console.log("categoryId", categoryId);
+    let getSingleCategory = `SELECT * FROM category WHERE id='${categoryId}'`;
+    connection.query(getSingleCategory, function(error, result) {
+        if (error) {
+            console.log("Database Query Error ::: ", error);
+        } else {
+            let catData = result[0];
+            console.log("catData", catData.title);
+            pageData.category = catData;
+            res.render("template", pageData);
+        }
+    });
+
+});
+
 /**
  * Create Server
  */
