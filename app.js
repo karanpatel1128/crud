@@ -137,6 +137,39 @@ app.get("/edit-category", function(req, res) {
 
 });
 
+app.get('/delete-category', function(req, res) {
+    if (req.query.cat_id) {
+        let categoryId = req.query.cat_id;
+        const deleteCat = `DELETE FROM category WHERE id='${categoryId}'`;
+        connection.query(deleteCat, function(error, result) {
+            if (error) {
+                console.log("Database Query Error", error);
+            } else {
+                res.redirect('/categories');
+            }
+        });
+    }
+});
+
+app.post("/update-category", function(req, res) {
+    console.log("req.body", req.body);
+    const title = req.body.title;
+    const description = req.body.description;
+    const categoryId = req.body.category_Id;
+    console.log("title", title);
+    console.log("description", description);
+    console.log("categoryId", categoryId);
+
+    let updateCat = `UPDATE category SET title='${title}', description='${description}' WHERE id='${categoryId}'`;
+    connection.query(updateCat, function(error, result) {
+        if (error) {
+            console.log("Database Query Error", error);
+        } else {
+            res.redirect('/categories');
+        }
+    });
+});
+
 /**
  * Create Server
  */
