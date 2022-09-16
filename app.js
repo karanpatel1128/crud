@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require("body-parser");
 const mysql = require("mysql");
-
+const expressSession = require('express-session');
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -13,6 +13,18 @@ const connection = mysql.createConnection({
     password: "7415589504",
     database: "crud_db"
 });
+const sessionConfig = {
+    secret: 'askfnkasfnkasn',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        secure: false,
+        path: '/',
+        maxAge: 1000 * 60 * 60 * 24
+    }
+};
+app.use(expressSession(sessionConfig));
 
 /**
  * To check database connection
@@ -95,6 +107,8 @@ app.post("/create-category", function(req, res) {
         if (error) {
             console.log("Database Query Error ::: ", error);
         } else {
+            req.session.status = "Success";
+            req.session.message = "Category has been created";
             res.redirect('/categories');
         }
     });
@@ -103,8 +117,18 @@ app.post("/create-category", function(req, res) {
 app.get("/categories", function(req, res) {
     let pageData = {
         title: "All Categories",
-        pageName: "all-categories"
+        pageName: "all-categories",
+        status: '',
+        message: ''
     };
+    if (req.session.status) {
+        pageData.status = req.session.status;
+        delete req.session.status;
+    }
+    if (req.session.message) {
+        pageData.message = req.session.message;
+        delete req.session.message;
+    }
     let allCat = `SELECT * FROM category`;
     connection.query(allCat, function(error, result) {
         if (error) {
@@ -165,6 +189,8 @@ app.post("/update-category", function(req, res) {
         if (error) {
             console.log("Database Query Error", error);
         } else {
+            req.session.status = "Success";
+            req.session.message = "Success! Category has been updated";
             res.redirect('/categories');
         }
     });
