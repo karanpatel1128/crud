@@ -54,22 +54,38 @@ app.get("/create-product", function(req, res) {
     res.render("template", pageData);
 });
 
-app.get("/products", function(req, res) {
-    let pageData = {
-        title: "All Products",
-        pageName: "all-products"
-    };
-    let getAllProducts = "SELECT * FROM products";
-    connection.query(getAllProducts, function(error, result) {
-        if (error) {
-            console.log("Database Query Error ::: ", error);
-        } else {
-            console.log("result", result);
-            pageData.products = result;
-            res.render("template", pageData);
-        }
-    });
+app.get("/products", async function(req, res) {
+    try {
+        let pageData = {
+            title: "All Products",
+            pageName: "all-products",
+            products: []
+        };
+        let result = await getAllProducts();
+        pageData.products = result;
+        console.log("result", result);
+        res.render("template", pageData);
+    } catch (error) {
+        console.log("get all product page Error", error);
+    }
 });
+
+async function getAllProducts() {
+    return new Promise(function(resolve, reject) {
+        let getAllProducts = "SELECT * FROM products";
+        connection.query(getAllProducts, function(error, result) {
+            if (error) {
+                let qryError = {
+                    message: 'Database Query Error',
+                    details: error
+                };
+                reject(qryError);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+}
 
 app.post("/create-product", function(req, res) {
     console.log("req.body", req.body);
